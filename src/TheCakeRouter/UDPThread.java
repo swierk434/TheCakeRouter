@@ -53,7 +53,8 @@ public class UDPThread extends Thread {
 	
 	public String mergeMessage(Vector<InetAddress> vector, int[] nodeIndex, String gap, String message) {
 		String out = "";
-		for(int index: nodeIndex) {
+		nextAddress = vector.get(0);
+		for(int index = 1; index < nodeIndex.length; index++) {
 			try {
 			out += vector.get(index).toString();
 			out += gap;
@@ -136,21 +137,24 @@ public class UDPThread extends Thread {
 		return outVector;
 	}
 	
+	public void recodePacket() {
+		int length = receivedPacket.getLength();
+    	try {
+    		recivedMessage = new String(receivedPacket.getData(), 0, length, "utf8");
+    	} catch (UnsupportedEncodingException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+    	recivedTokens = recivedMessage.split(" ");
+	}
 	
 	@SuppressWarnings("deprecation")
 	public void run() {
 			System.out.println("UDPThread Started");
 	        sendResponse("#JOIN_REQUEST#", Config.nodeAddress, Config.Port, "Error#JOIN_REQUEST# - Client");
 	        recievePacket();
+	        recodePacket();
 	        
-	        int length = receivedPacket.getLength();
-        	try {
-        		recivedMessage = new String(receivedPacket.getData(), 0, length, "utf8");
-        	} catch (UnsupportedEncodingException e) {
-        		// TODO Auto-generated catch block
-        		e.printStackTrace();
-        	}
-        	recivedTokens = recivedMessage.split(" ");
         	System.out.println(recivedMessage);
 	       if(recivedTokens[0] == "#REQUEST_ACCEPTED#") {
 	    	   nodeVector = arrayToNodeVector(recivedTokens, 1, recivedTokens.length-1);
@@ -172,8 +176,8 @@ public class UDPThread extends Thread {
             			clientPointer.nodeThread.stop();
 			    		break;
 			     	case "SEND":
-			     		message = "";
-			     		System.out.println("Here is nodes list, type nodes' nr separated with spaces to set route");
+			     		message = "#SEND# ";
+			     		System.out.println("Here is nodes list, type nodes' nr separated with spaces to set route"); // 7 9 3 4
 			     		updateNodes();
 			     		printNodes();
 			     		clientinput = scanIn.nextLine();
@@ -183,7 +187,14 @@ public class UDPThread extends Thread {
 			     		message += " ";
 			     		System.out.println("Type messsage content");
 			     		clientinput = scanIn.nextLine();
-			     		sendResponse(message, Config.nodeAddress, Config.NodePort, "Ry¿");
+			     		sendResponse(message, nextAddress, Config.NodePort, "Ry¿");
+			     		
+			     		recievePacket();
+			     		recodePacket();
+			     		
+			     		System.out.println("You recived reply:");
+			     		System.out.println(recivedMessage);
+			     		
 			     		break;
 			     }
 	       }

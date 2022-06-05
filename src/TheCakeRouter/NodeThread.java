@@ -124,6 +124,17 @@ public class NodeThread extends Thread{
 			e1.printStackTrace();
 		}
 	}
+	public void recodePacket() {
+		int length = receivedPacket.getLength();
+    	try {
+    		recivedMessage = new String(receivedPacket.getData(), 0, length, "utf8");
+    	} catch (UnsupportedEncodingException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+    	recivedTokens = recivedMessage.split(" ");
+	}
+	
 	public void run() {
 		System.out.println("Node is running; this address is:");
 		System.out.println(thisAddress);
@@ -144,14 +155,7 @@ public class NodeThread extends Thread{
 	            
 	            
 	            else {
-	            	int length = receivedPacket.getLength();
-	            	try {
-	            		recivedMessage = new String(receivedPacket.getData(), 0, length, "utf8");
-	            	} catch (UnsupportedEncodingException e) {
-	            		// TODO Auto-generated catch block
-	            		e.printStackTrace();
-	            	}
-	            	recivedTokens = recivedMessage.split(" ");
+	            	recodePacket();
 	            	System.out.println(recivedMessage);
 	            	
 	            	previousAddress = receivedPacket.getAddress(); // Port i host który wys³a³ nam zapytanie
