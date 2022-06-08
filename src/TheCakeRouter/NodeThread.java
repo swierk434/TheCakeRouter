@@ -45,7 +45,11 @@ public class NodeThread extends Thread{
 		nodeVector = new Vector<InetAddress>(0);
 		nodeVector.add(thisAddress);  
 		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
-		
+		try{
+            nextAddress = InetAddress.getByName("11.11.11.11");
+        }catch (UnknownHostException e){
+            throw new RuntimeException(e);
+        }
 	}
 	public NodeThread(Vector<InetAddress> vector) {
 		super();
@@ -73,6 +77,11 @@ public class NodeThread extends Thread{
 		}
 		nodeVector = vector;
 		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
+		try{
+            nextAddress = InetAddress.getByName("11.11.11.11");
+        }catch (UnknownHostException e){
+            throw new RuntimeException(e);
+        }
 	}
 	public String merge(String[] tab, int firstIndex, int lastIndex, String gap) {
 		String out = "";
@@ -144,7 +153,6 @@ public class NodeThread extends Thread{
 	            
 	            System.out.println(receivedPacket.getAddress());
 	            System.out.println(nextAddress);
-	            
 	            if(receivedPacket.getAddress().toString().equals(nextAddress.toString())) { // sprawcz czy wiadomoœæ wraca po wêz³ach 
 	            	byteResponse = receivedPacket.getData();
 	            	sendResponse(byteResponse,receivedPacket.getLength() , sendBackAddress, previousPort, "[Node]error'NO_TAG' (sending back)");	            	
@@ -153,6 +161,7 @@ public class NodeThread extends Thread{
 	            	previousAddress = null;
 	            	previousPort = null;
 	            }
+	            
 	            else {
 	            	recodePacket();
 	            	System.out.println("[Node]"+recivedMessage);
