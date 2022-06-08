@@ -50,7 +50,7 @@ public class UDPThread extends Thread {
 		}	
 		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
 	}
-	public String mergeMessage(Vector<InetAddress> vector, int[] nodeIndex, String gap, String message) {
+	public String mergeMessage(Vector<InetAddress> vector, int[] nodeIndex, String gap, String error) {
 		String out = "";
 		nextAddress = vector.get(0);
 		for(int index = 1; index < nodeIndex.length; index++) {
@@ -58,10 +58,9 @@ public class UDPThread extends Thread {
 			out += vector.get(index).toString();
 			out += gap;
 			} catch (Exception e) {
-				System.out.print("[UDP]Failed to build message");
+				System.out.print(error);
 			}
 		}
-		out += message;
 		return out;
 	}
 	public int[] stringToIntArray(String[] tab) {
@@ -81,7 +80,7 @@ public class UDPThread extends Thread {
 	}
 	public void printNodes() {
 		for(int i = 0; i < nodeVector.size(); i++) {
-			System.out.printf("[UDP]Node nr: %2.0d ip: %s%n", i,nodeVector.get(i).toString().split("/")[1]);
+			System.out.printf("[UDP]Node nr: %d ip: %s%n", i,nodeVector.get(i).toString().split("/")[1]);
 		}
 	}
 	public void sendResponse(byte[] byteResponsetmp, int len, InetAddress address, int port, String error_code) {
@@ -180,6 +179,7 @@ public class UDPThread extends Thread {
 			     		message += " ";
 			     		System.out.println("[UDP]Type messsage content");
 			     		clientinput = scanIn.nextLine();
+			     		message += clientinput;
 			     		sendResponse(message, nextAddress, Config.NodePort, "[UDP]Ry¿");
 			     		
 			     		recievePacket();
