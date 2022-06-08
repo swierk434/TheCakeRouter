@@ -142,7 +142,10 @@ public class NodeThread extends Thread{
 	            
 	            System.out.println("[Node]PacketRecived");
 	            
-	            if(receivedPacket.getAddress() == nextAddress) { // sprawcz czy wiadomoœæ wraca po wêz³ach 
+	            System.out.println(receivedPacket.getAddress());
+	            System.out.println(nextAddress);
+	            
+	            if(receivedPacket.getAddress().toString().equals(nextAddress.toString())) { // sprawcz czy wiadomoœæ wraca po wêz³ach 
 	            	byteResponse = receivedPacket.getData();
 	            	sendResponse(byteResponse,receivedPacket.getLength() , sendBackAddress, previousPort, "[Node]error'NO_TAG' (sending back)");	            	
 	            	System.out.println("[Node]Sending Back On Address: " + receivedPacket.getAddress().toString());
