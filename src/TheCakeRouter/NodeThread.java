@@ -160,16 +160,17 @@ public class NodeThread extends Thread{
 		        	   switch (recivedTokens[0]){
 		            		case "#SEND#":
 		            			sendBackAddress = previousAddress;
-		            			sendingPort = Config.NodePort;
+		            			sendingPort = Config.SendingPort;
 		            			try {
 		            				nextAddress = InetAddress.getByName(recivedTokens[1].split("/")[1]);
 		            				if(nodeVector.contains(nextAddress) == true) {
 			            				response = "#SEND# ";
-			            				sendingPort = Config.SendingPort;
+			            				sendingPort = Config.NodePort;
 			            			}
 			            			response += merge(recivedTokens, 2, recivedTokens.length-1, " ");
-			            			System.out.println("[Node]response: ");
-			            			System.out.println("[Node]"+response);
+			            			System.out.println("[Node]Response: "+ response);
+			            			System.out.println("[Node]On Address: " + nextAddress.toString());
+			            			System.out.println("[Node]On Port: " + sendingPort.toString());
 			            			sendResponse(response, nextAddress, sendingPort, "[Node]error#SEND#");
 		            			} catch (UnknownHostException e) {
 		            				System.out.println("[Node]Seting Address Failed");
