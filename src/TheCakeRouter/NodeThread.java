@@ -159,6 +159,7 @@ public class NodeThread extends Thread{
 		            if(recivedTokens.length >= 1) {
 		        	   switch (recivedTokens[0]){
 		            		case "#SEND#":
+		            			response = "";
 		            			sendBackAddress = previousAddress;
 		            			sendingPort = Config.SendingPort;
 		            			try {
