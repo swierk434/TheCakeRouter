@@ -182,7 +182,7 @@ public class NodeThread extends Thread{
 			            			response = "#ADD_NODE# ";
 			            			response += previousAddress.toString();
 			            		for(int n = 0; n < nodeVector.size(); n++) {
-			    	 	        	if(nodeVector.get(n).toString().equals(thisAddress.toString())) {
+			    	 	        	if(nodeVector.get(n).toString().equals(thisAddress.toString()) == false) {
 			    	 	        		sendResponse(response, nodeVector.get(n), Config.NodePort, "error#ADD_NODE#");
 			    	 	        	}
 			    	 	        }
@@ -202,7 +202,11 @@ public class NodeThread extends Thread{
 		            			if(recivedTokens.length == 2) {
 		            				try {
 										tmpAddress = InetAddress.getByName(recivedTokens[1].split("/")[1]);
+										if(nodeVector.contains(tmpAddress)) {
 										nodeVector.add(tmpAddress);
+										} else {
+											System.out.println("[Node]Address Rejected (Warning)");
+										}
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
