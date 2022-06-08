@@ -39,18 +39,17 @@ public class UDPThread extends Thread {
 			e1.printStackTrace();
 		}
 		try {
-			datagramSocket = new DatagramSocket(Config.NodePort);
+			datagramSocket = new DatagramSocket(Config.Port);
 		} catch (SocketException e2) {
-			System.out.println("Opening Socket Failed");
+			System.out.println("[UDP]Opening Socket Failed");
 		}
 		try {
 			datagramSocket.setSoTimeout(0);
 		} catch (SocketException e) {
-			System.out.println("Changing Timeout Failed");
+			System.out.println("[UDP]Changing Timeout Failed");
 		}	
 		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
 	}
-	
 	public String mergeMessage(Vector<InetAddress> vector, int[] nodeIndex, String gap, String message) {
 		String out = "";
 		nextAddress = vector.get(0);
@@ -59,13 +58,12 @@ public class UDPThread extends Thread {
 			out += vector.get(index).toString();
 			out += gap;
 			} catch (Exception e) {
-				System.out.print("Failed to build message");
+				System.out.print("[UDP]Failed to build message");
 			}
 		}
 		out += message;
 		return out;
 	}
-	
 	public int[] stringToIntArray(String[] tab) {
 		int out[] = null;
 		try {
@@ -74,23 +72,20 @@ public class UDPThread extends Thread {
 				out[i] = Integer.parseInt(tab[i]);
 			}
 		} catch (Exception e) {
-			System.out.println("Wrong input format");
+			System.out.println("[UDP]Wrong input format");
 		}
 		return out;
 	}
-	
-	
 	public void updateNodes() {
 		nodeVector = clientPointer.nodeThread.nodeVector;
 	}
-	
 	public void printNodes() {
 		for(int i = 0; i < nodeVector.size(); i++) {
-			System.out.printf("Node nr: %2.0d ip: %s%n", i,nodeVector.get(i).toString().split("/")[0]);
+			System.out.printf("[UDP]Node nr: %2.0d ip: %s%n", i,nodeVector.get(i).toString().split("/")[1]);
 		}
 	}
-	
 	public void sendResponse(byte[] byteResponsetmp, int len, InetAddress address, int port, String error_code) {
+
 		byteResponse = byteResponsetmp;
 		responsePacket = new DatagramPacket(byteResponse, len, address, port);
          try {
@@ -103,7 +98,7 @@ public class UDPThread extends Thread {
 		try {
 			byteResponse = stringResponse.getBytes("utf8");
 		} catch (UnsupportedEncodingException e1) {
-			System.out.println("string yo byteresponse Failed");
+			System.out.println("[UDP]string yo byteresponse Failed");
 		}
 		responsePacket = new DatagramPacket(byteResponse, byteResponse.length, address, port); 
          try {
@@ -113,7 +108,6 @@ public class UDPThread extends Thread {
 				System.exit(1);
 			}
 	}
-	
 	public void recievePacket() {
 		try {
 			datagramSocket.receive(receivedPacket);
@@ -122,21 +116,19 @@ public class UDPThread extends Thread {
 			e1.printStackTrace();
 		}
 	}
-	
 	public Vector<InetAddress> arrayToNodeVector(String[] tab, int startIndex, int endIndex) {
 		Vector<InetAddress> outVector = new Vector<InetAddress>(0);
 		for(Integer i = startIndex; i <= endIndex; i++) {
 			try {
-				tmpAddress = InetAddress.getByName(tab[i].split("/")[0]);
+				tmpAddress = InetAddress.getByName(tab[i].split("/")[1]);
 				outVector.add(tmpAddress);
 			} catch (UnknownHostException e) {
-				System.out.println("Failed to add address to vector at index: "+i.toString());
+				System.out.println("[UDP]Failed to add address to vector at index: "+i.toString());
 			}
 			
 		}
 		return outVector;
 	}
-	
 	public void recodePacket() {
 		int length = receivedPacket.getLength();
     	try {
@@ -150,54 +142,55 @@ public class UDPThread extends Thread {
 	
 	@SuppressWarnings("deprecation")
 	public void run() {
-			System.out.println("UDPThread Started");
-	        sendResponse("#JOIN_REQUEST#", Config.nodeAddress, Config.Port, "Error#JOIN_REQUEST# - Client");
+			System.out.println("[UDP]UDPThread Started");
+	        sendResponse("#JOIN_REQUEST#", Config.nodeAddress, Config.NodePort, "[UDP]Error#JOIN_REQUEST# - Client");
+	        System.out.println("[UDP]Join request sent");
 	        recievePacket();
-	        recodePacket();
-	        
-        	System.out.println(recivedMessage);
-	       if(recivedTokens[0] == "#REQUEST_ACCEPTED#") {
+	        recodePacket();  
+        	System.out.println("[UDP]Recived message:"+recivedMessage);
+	       if(recivedTokens[0].equals("#REQUEST_ACCEPTED#")) {
+	    	   System.out.println("[UDP]Request accepted");
 	    	   nodeVector = arrayToNodeVector(recivedTokens, 1, recivedTokens.length-1);
 	       }
 	       clientPointer.nodeThread = new NodeThread(nodeVector);
 	       clientPointer.nodeThread.start();
 	       
 			while (clientinput != "EXIT"){
-				System.out.println("type 'SEND' to send message; type 'EXIT' to exit");
+				System.out.println("[UDP]type 'SEND' to send message; type 'EXIT' to exit");
 				clientinput = scanIn.nextLine();
 			    switch(clientinput) {
 			    	case "EXIT":
             			response = "#EXIT# " + thisAddress.toString();
             			for(int n = 0; n < nodeVector.size(); n++) {
             				if(nodeVector.get(n) != thisAddress) {
-            					sendResponse(response, nodeVector.get(n), Config.NodePort, "error#ADD_NODE#");
+            					sendResponse(response, nodeVector.get(n), Config.NodePort, "[UDP]error#ADD_NODE#");
             				}
             			}
             			clientPointer.nodeThread.stop();
 			    		break;
 			     	case "SEND":
 			     		message = "#SEND# ";
-			     		System.out.println("Here is nodes list, type nodes' nr separated with spaces to set route"); // 7 9 3 4
+			     		System.out.println("[UDP]Here is nodes list, type nodes' nr separated with spaces to set route"); // 7 9 3 4
 			     		updateNodes();
 			     		printNodes();
 			     		clientinput = scanIn.nextLine();
 			     		clientTokens = clientinput.split(" ");
-			     		message += mergeMessage(nodeVector,stringToIntArray(clientTokens)," ", "Failed to merge message (route)");
+			     		message += mergeMessage(nodeVector,stringToIntArray(clientTokens)," ", "[UDP]Failed to merge message (route)");
 			     		message += Config.recipientAddress.toString();
 			     		message += " ";
-			     		System.out.println("Type messsage content");
+			     		System.out.println("[UDP]Type messsage content");
 			     		clientinput = scanIn.nextLine();
-			     		sendResponse(message, nextAddress, Config.NodePort, "Ry¿");
+			     		sendResponse(message, nextAddress, Config.NodePort, "[UDP]Ry¿");
 			     		
 			     		recievePacket();
 			     		recodePacket();
 			     		
-			     		System.out.println("You recived reply:");
-			     		System.out.println(recivedMessage);
+			     		System.out.println("[UDP]You recived reply:");
+			     		System.out.println("[UDP]"+recivedMessage);
 			     		
 			     		break;
 			     }
 	       }
-			System.out.println("UDPThread Finished");
+			System.out.println("[UDP]UDPThread Finished");
 	    }
 }

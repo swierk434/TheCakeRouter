@@ -6,12 +6,12 @@ import java.net.UnknownHostException;
 public class Config {
     public static final int Port = 33000;
     public static final int NodePort = 33001;
-    public static final int SendingPort = 33001;
+    public static final int SendingPort = 33002;
     public static final int Buffer_size = 65536;
     public static final InetAddress nodeAddress;
     static {
         try{
-            nodeAddress = InetAddress.getByName("172.20.10.2");
+            nodeAddress = InetAddress.getByName("192.168.43.247");
         }catch (UnknownHostException e){
             throw new RuntimeException(e);
         }
@@ -19,7 +19,7 @@ public class Config {
     public static final InetAddress recipientAddress;
     static {
         try{
-        	recipientAddress = InetAddress.getByName("172.20.10.2");
+        	recipientAddress = InetAddress.getByName("192.168.43.231");
         }catch (UnknownHostException e){
             throw new RuntimeException(e);
         }
