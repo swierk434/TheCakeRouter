@@ -180,6 +180,7 @@ public class UDPThread extends Thread {
 			     		System.out.println("[UDP]Type messsage content");
 			     		clientinput = scanIn.nextLine();
 			     		message += clientinput;
+			     		System.out.println("[UDP]Sending:"+message);
 			     		sendResponse(message, nextAddress, Config.NodePort, "[UDP]Ry¿");
 			     		
 			     		recievePacket();

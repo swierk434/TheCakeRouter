@@ -156,8 +156,8 @@ public class NodeThread extends Thread{
 	            if(receivedPacket.getAddress().toString().equals(nextAddress.toString())) { // sprawcz czy wiadomoœæ wraca po wêz³ach 
 	            	byteResponse = receivedPacket.getData();
 	            	sendResponse(byteResponse,receivedPacket.getLength() , sendBackAddress, previousPort, "[Node]error'NO_TAG' (sending back)");	            	
-	            	System.out.println("[Node]Sending Back On Address: " + receivedPacket.getAddress().toString());
-        			System.out.println("[Node]Sending Back On Port: " + ((Integer)receivedPacket.getPort()).toString());
+	            	System.out.println("[Node]Sending Back On Address: " + sendBackAddress);
+        			System.out.println("[Node]Sending Back On Port: " + ((Integer)previousPort).toString());
 	            	previousAddress = null;
 	            	previousPort = null;
 	            }
