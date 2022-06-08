@@ -182,7 +182,7 @@ public class NodeThread extends Thread{
 			            			response = "#ADD_NODE# ";
 			            			response += previousAddress.toString();
 			            		for(int n = 0; n < nodeVector.size(); n++) {
-			    	 	        	if(nodeVector.get(n) != thisAddress) {
+			    	 	        	if(nodeVector.get(n).toString().equals(thisAddress.toString())) {
 			    	 	        		sendResponse(response, nodeVector.get(n), Config.NodePort, "error#ADD_NODE#");
 			    	 	        	}
 			    	 	        }
