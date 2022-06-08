@@ -200,7 +200,7 @@ public class NodeThread extends Thread{
 		            			if(recivedTokens.length == 2) {
 		            				try {
 										tmpAddress = InetAddress.getByName(recivedTokens[1].split("/")[1]);
-										if(nodeVector.contains(tmpAddress)) {
+										if(nodeVector.contains(tmpAddress) == false) {
 										nodeVector.add(tmpAddress);
 										} else {
 											//System.out.println("[Node]Address Rejected (Warning)");
