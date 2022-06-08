@@ -207,7 +207,11 @@ public class NodeThread extends Thread{
 			            			System.out.println("[Node]"+response);
 			            			sendResponse(response, nextAddress, previousPort, "error#JOIN_REQUEST#");
 			      
-			    	 	            nextAddress = null;
+			            			try{
+			            	            nextAddress = InetAddress.getByName("11.11.11.11");
+			            	        }catch (UnknownHostException e){
+			            	            throw new RuntimeException(e);
+			            	        }
 			    	 	            previousAddress = null;
 		            			}
 		            			else break;
@@ -223,7 +227,11 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
-		            				nextAddress = null;
+		            				try{
+		            		            nextAddress = InetAddress.getByName("11.11.11.11");
+		            		        }catch (UnknownHostException e){
+		            		            throw new RuntimeException(e);
+		            		        }
 		            				previousAddress = null;
 		            			}
 		            			break;
@@ -235,7 +243,11 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
-		            				nextAddress = null;
+		            				try{
+		            		            nextAddress = InetAddress.getByName("11.11.11.11");
+		            		        }catch (UnknownHostException e){
+		            		            throw new RuntimeException(e);
+		            		        }
 		            				previousAddress = null;
 		            			}
 		            			break;
