@@ -142,7 +142,7 @@ public class NodeThread extends Thread{
 	            
 	            System.out.println("[Node]PacketRecived");
 	            
-	            if(receivedPacket.getAddress() == previousAddress) { // sprawcz czy wiadomoœæ wraca po wêz³ach 
+	            if(receivedPacket.getAddress() == nextAddress) { // sprawcz czy wiadomoœæ wraca po wêz³ach 
 	            	byteResponse = receivedPacket.getData();
 	            	sendResponse(byteResponse,receivedPacket.getLength() , sendBackAddress, previousPort, "[Node]error'NO_TAG' (sending back)");	            	
 	            	System.out.println("[Node]Sending Back On Address: " + receivedPacket.getAddress().toString());
@@ -211,6 +211,7 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
+		            				nextAddress = null;
 		            				previousAddress = null;
 		            			}
 		            			break;
@@ -222,6 +223,7 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
+		            				nextAddress = null;
 		            				previousAddress = null;
 		            			}
 		            			break;
