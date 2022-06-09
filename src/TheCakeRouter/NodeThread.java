@@ -144,15 +144,16 @@ public class NodeThread extends Thread{
 		System.out.println("[Node]Node is running; this address is:");
 		System.out.println("[Node]"+thisAddress);
 	        while (true) {
-	        	System.out.println("[Node]Nodes' adresses in network");
-	        	System.out.println("[Node]"+nodeVector);
+	        	//System.out.println("[Node]Nodes' adresses in network");
+	        	//System.out.println("[Node]"+nodeVector);
 	            
 	        	receievePacket();
 	            
 	            System.out.println("[Node]PacketRecived");
 	            
-	            System.out.println(receivedPacket.getAddress());
-	            System.out.println(nextAddress);
+	            //System.out.println(receivedPacket.getAddress());
+	            //System.out.println(nextAddress);
+	            
 	            if(receivedPacket.getAddress().toString().equals(nextAddress.toString())) { // sprawcz czy wiadomo�� wraca po w�z�ach 
 	            	byteResponse = receivedPacket.getData();
 	            	sendResponse(byteResponse,receivedPacket.getLength() , sendBackAddress, previousPort, "[Node]error'NO_TAG' (sending back)");	            	
@@ -204,9 +205,10 @@ public class NodeThread extends Thread{
 			            		}
 			            			response = "#REQUEST_ACCEPTED# "; // Tag dla udpThread
 			            			response += mergeVector(nodeVector, 0, nodeVector.size()-1, " ");
-			            			System.out.println("[Node]"+response);
+			            			System.out.println("[Node]Sending request reply:"+response);
 			            			sendResponse(response, nextAddress, previousPort, "error#JOIN_REQUEST#");
-			      
+			            			System.out.println("[Node]Nodes' adresses in network");
+			        	        	System.out.println("[Node]"+nodeVector);
 			            			nextAddress = resetIP();
 			    	 	            previousAddress = null;
 		            			}
@@ -223,6 +225,8 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
+		            				System.out.println("[Node]Nodes' adresses in network");
+		            	        	System.out.println("[Node]"+nodeVector);
 		            				nextAddress = resetIP();
 		            				previousAddress = null;
 		            			}
@@ -235,6 +239,8 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
+		            				System.out.println("[Node]Nodes' adresses in network");
+		            	        	System.out.println("[Node]"+nodeVector);
 		            				nextAddress = resetIP();
 		            				previousAddress = null;
 		            			}
@@ -245,7 +251,7 @@ public class NodeThread extends Thread{
 		        	   System.out.println("[Node]Message is empty");
 		           }
 	            }
-	        System.out.println("[Node]");    
+	        //System.out.println("[Node]");    
 	        }
 	    }
 }

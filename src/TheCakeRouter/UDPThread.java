@@ -55,7 +55,7 @@ public class UDPThread extends Thread {
 		nextAddress = vector.get(0);
 		for(int index = 1; index < nodeIndex.length; index++) {
 			try {
-			out += vector.get(index).toString();
+			out += vector.get(nodeIndex[index]).toString();
 			out += gap;
 			} catch (Exception e) {
 				System.out.print(error);
@@ -80,6 +80,7 @@ public class UDPThread extends Thread {
 	}
 	public void printNodes() {
 		for(int i = 0; i < nodeVector.size(); i++) {
+			if(nodeVector.get(i).toString().equals(thisAddress.toString()) == false)
 			System.out.printf("[UDP]Node nr: %d ip: %s%n", i,nodeVector.get(i).toString().split("/")[1]);
 		}
 	}
@@ -154,7 +155,7 @@ public class UDPThread extends Thread {
 	       clientPointer.nodeThread = new NodeThread(nodeVector);
 	       clientPointer.nodeThread.start();
 	       
-			while (clientinput != "EXIT"){
+			while (clientinput.equals("EXIT") == false){
 				System.out.println("[UDP]type 'SEND' to send message; type 'EXIT' to exit");
 				clientinput = scanIn.nextLine();
 			    switch(clientinput) {

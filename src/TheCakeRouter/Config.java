@@ -11,7 +11,7 @@ public class Config {
     public static final InetAddress nodeAddress;
     static {
         try{
-            nodeAddress = InetAddress.getByName("192.168.43.252");
+            nodeAddress = InetAddress.getByName("172.20.10.5");
         }catch (UnknownHostException e){
             throw new RuntimeException(e);
         }
@@ -19,7 +19,7 @@ public class Config {
     public static final InetAddress recipientAddress;
     static {
         try{
-        	recipientAddress = InetAddress.getByName("192.168.43.231");
+        	recipientAddress = InetAddress.getByName("172.20.10.2");
         }catch (UnknownHostException e){
             throw new RuntimeException(e);
         }
