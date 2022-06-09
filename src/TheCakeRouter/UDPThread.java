@@ -80,7 +80,7 @@ public class UDPThread extends Thread {
 	}
 	public void printNodes() {
 		for(int i = 0; i < nodeVector.size(); i++) {
-			if(nodeVector.get(i).toString().equals(thisAddress.toString()) == false)
+			//if(nodeVector.get(i).toString().equals(thisAddress.toString()) == false)
 			System.out.printf("[UDP]Node nr: %d ip: %s%n", i,nodeVector.get(i).toString().split("/")[1]);
 		}
 	}
