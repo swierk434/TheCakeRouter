@@ -52,7 +52,7 @@ public class UDPThread extends Thread {
 	}
 	public String mergeMessage(Vector<InetAddress> vector, int[] nodeIndex, String gap, String error) {
 		String out = "";
-		nextAddress = vector.get(0);
+		nextAddress = vector.get(nodeIndex[0]);
 		for(int index = 1; index < nodeIndex.length; index++) {
 			try {
 			out += vector.get(nodeIndex[index]).toString();
@@ -181,7 +181,9 @@ public class UDPThread extends Thread {
 			     		System.out.println("[UDP]Type messsage content");
 			     		clientinput = scanIn.nextLine();
 			     		message += clientinput;
-			     		System.out.println("[UDP]Sending:"+message);
+			     		System.out.println("[UDP]Sending: "+message);
+			     		System.out.println("[Node]On Address: " + nextAddress.toString());
+            			System.out.println("[Node]On Port: " + ((Integer)Config.NodePort).toString());
 			     		sendResponse(message, nextAddress, Config.NodePort, "[UDP]Ry¿");
 			     		
 			     		recievePacket();

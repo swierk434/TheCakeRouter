@@ -143,6 +143,8 @@ public class NodeThread extends Thread{
 	public void run() {
 		System.out.println("[Node]Node is running; this address is:");
 		System.out.println("[Node]"+thisAddress);
+		System.out.println("[Node]Nodes' adresses in network");
+    	System.out.println("[Node]"+nodeVector);
 	        while (true) {
 	        	//System.out.println("[Node]Nodes' adresses in network");
 	        	//System.out.println("[Node]"+nodeVector);
