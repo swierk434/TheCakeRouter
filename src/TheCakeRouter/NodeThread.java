@@ -155,16 +155,18 @@ public class NodeThread extends Thread{
 	            
 	            //System.out.println(receivedPacket.getAddress());
 	            //System.out.println(nextAddress);
+	            byteResponse = receivedPacket.getData();
 	            
-	            if(receivedPacket.getAddress().toString().equals(nextAddress.toString())) { // sprawcz czy wiadomo�� wraca po w�z�ach 
-	            	byteResponse = receivedPacket.getData();
-	            	sendResponse(byteResponse,receivedPacket.getLength() , sendBackAddress, previousPort, "[Node]error'NO_TAG' (sending back)");	            	
-	            	System.out.println("[Node]Sending Back On Address: " + sendBackAddress);
-        			System.out.println("[Node]Sending Back On Port: " + ((Integer)previousPort).toString());
-	            	previousAddress = null;
-	            	previousPort = null;
+	            if((char)byteResponse[0] != '#') {
+	            	if(receivedPacket.getAddress().toString().equals(nextAddress.toString())) { // sprawcz czy wiadomo�� wraca po w�z�ach 
+	            		sendResponse(byteResponse,receivedPacket.getLength() , sendBackAddress, previousPort, "[Node]error'NO_TAG' (sending back)");	            	
+	            		System.out.println("[Node]Sending Back On Address: " + sendBackAddress);
+	            		System.out.println("[Node]Sending Back On Port: " + ((Integer)previousPort).toString());
+	            		previousAddress = null;
+	            		previousPort = null;
+	            	}
+	            	else System.out.println("[Node]Unknown packet format");
 	            }
-	            
 	            else {
 	            	recodePacket();
 	            	System.out.println("[Node]"+recivedMessage);

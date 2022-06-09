@@ -182,8 +182,8 @@ public class UDPThread extends Thread {
 			     		clientinput = scanIn.nextLine();
 			     		message += clientinput;
 			     		System.out.println("[UDP]Sending: "+message);
-			     		System.out.println("[Node]On Address: " + nextAddress.toString());
-            			System.out.println("[Node]On Port: " + ((Integer)Config.NodePort).toString());
+			     		System.out.println("[UDP]On Address: " + nextAddress.toString());
+            			System.out.println("[UDP]On Port: " + ((Integer)Config.NodePort).toString());
 			     		sendResponse(message, nextAddress, Config.NodePort, "[UDP]Ry¿");
 			     		
 			     		recievePacket();
