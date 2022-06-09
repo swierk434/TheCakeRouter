@@ -44,7 +44,7 @@ public class UDPThread extends Thread {
 			System.out.println("[UDP]Opening Socket Failed");
 		}
 		try {
-			datagramSocket.setSoTimeout(0);
+			datagramSocket.setSoTimeout(10000);
 		} catch (SocketException e) {
 			System.out.println("[UDP]Changing Timeout Failed");
 		}	
