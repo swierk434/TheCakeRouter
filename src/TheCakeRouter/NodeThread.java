@@ -45,7 +45,7 @@ public class NodeThread extends Thread{
 		nodeVector = new Vector<InetAddress>(0);
 		nodeVector.add(thisAddress);  
 		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
-		resetIP();
+		nextAddress = resetIP();
 	}
 	public NodeThread(Vector<InetAddress> vector) {
 		super();
@@ -73,7 +73,7 @@ public class NodeThread extends Thread{
 		}
 		nodeVector = vector;
 		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
-		resetIP();
+		nextAddress = resetIP();
 	}
 	public String merge(String[] tab, int firstIndex, int lastIndex, String gap) {
 		String out = "";
@@ -207,7 +207,7 @@ public class NodeThread extends Thread{
 			            			System.out.println("[Node]"+response);
 			            			sendResponse(response, nextAddress, previousPort, "error#JOIN_REQUEST#");
 			      
-			            			resetIP();
+			            			nextAddress = resetIP();
 			    	 	            previousAddress = null;
 		            			}
 		            			else break;
@@ -223,7 +223,7 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
-		            				resetIP();
+		            				nextAddress = resetIP();
 		            				previousAddress = null;
 		            			}
 		            			break;
@@ -235,7 +235,7 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
-		            				resetIP();
+		            				nextAddress = resetIP();
 		            				previousAddress = null;
 		            			}
 		            			break;
