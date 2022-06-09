@@ -13,7 +13,7 @@ public class NodeThread extends Thread{
 	String recivedMessage, recivedTokens[], response;
 	DatagramSocket datagramSocket;
 	DatagramPacket receivedPacket, responsePacket;
-	InetAddress previousAddress, nextAddress, thisAddress, tmpAddress, sendBackAddress;
+	InetAddress previousAddress, nextAddress, thisAddress, tmpAddress, sendBackAddress,resetAddress;
 	Integer previousPort, sendingPort;
 	byte[] byteMessage, byteResponse;
 	Vector<InetAddress> nodeVector;
@@ -45,11 +45,7 @@ public class NodeThread extends Thread{
 		nodeVector = new Vector<InetAddress>(0);
 		nodeVector.add(thisAddress);  
 		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
-		try{
-            nextAddress = InetAddress.getByName("11.11.11.11");
-        }catch (UnknownHostException e){
-            throw new RuntimeException(e);
-        }
+		resetIP();
 	}
 	public NodeThread(Vector<InetAddress> vector) {
 		super();
@@ -77,11 +73,7 @@ public class NodeThread extends Thread{
 		}
 		nodeVector = vector;
 		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
-		try{
-            nextAddress = InetAddress.getByName("11.11.11.11");
-        }catch (UnknownHostException e){
-            throw new RuntimeException(e);
-        }
+		resetIP();
 	}
 	public String merge(String[] tab, int firstIndex, int lastIndex, String gap) {
 		String out = "";
@@ -139,6 +131,14 @@ public class NodeThread extends Thread{
     	}
     	recivedTokens = recivedMessage.split(" ");
 	}
+	public InetAddress resetIP() {
+		try{
+           resetAddress = InetAddress.getByName("127.0.0.0");
+        }catch (UnknownHostException e){
+            throw new RuntimeException(e);
+        }
+		return resetAddress;
+	}
 	
 	public void run() {
 		System.out.println("[Node]Node is running; this address is:");
@@ -153,7 +153,7 @@ public class NodeThread extends Thread{
 	            
 	            System.out.println(receivedPacket.getAddress());
 	            System.out.println(nextAddress);
-	            if(receivedPacket.getAddress().toString().equals(nextAddress.toString())) { // sprawcz czy wiadomoœæ wraca po wêz³ach 
+	            if(receivedPacket.getAddress().toString().equals(nextAddress.toString())) { // sprawcz czy wiadomoï¿½ï¿½ wraca po wï¿½zï¿½ach 
 	            	byteResponse = receivedPacket.getData();
 	            	sendResponse(byteResponse,receivedPacket.getLength() , sendBackAddress, previousPort, "[Node]error'NO_TAG' (sending back)");	            	
 	            	System.out.println("[Node]Sending Back On Address: " + sendBackAddress);
@@ -166,7 +166,7 @@ public class NodeThread extends Thread{
 	            	recodePacket();
 	            	System.out.println("[Node]"+recivedMessage);
 	            	
-	            	previousAddress = receivedPacket.getAddress(); // Port i host który wys³a³ nam zapytanie
+	            	previousAddress = receivedPacket.getAddress(); // Port i host ktï¿½ry wysï¿½aï¿½ nam zapytanie
 	            	previousPort = receivedPacket.getPort();
 	            	
 	            	//System.out.println(recivedTokens[]);
@@ -207,11 +207,7 @@ public class NodeThread extends Thread{
 			            			System.out.println("[Node]"+response);
 			            			sendResponse(response, nextAddress, previousPort, "error#JOIN_REQUEST#");
 			      
-			            			try{
-			            	            nextAddress = InetAddress.getByName("11.11.11.11");
-			            	        }catch (UnknownHostException e){
-			            	            throw new RuntimeException(e);
-			            	        }
+			            			resetIP();
 			    	 	            previousAddress = null;
 		            			}
 		            			else break;
@@ -227,11 +223,7 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
-		            				try{
-		            		            nextAddress = InetAddress.getByName("11.11.11.11");
-		            		        }catch (UnknownHostException e){
-		            		            throw new RuntimeException(e);
-		            		        }
+		            				resetIP();
 		            				previousAddress = null;
 		            			}
 		            			break;
@@ -243,11 +235,7 @@ public class NodeThread extends Thread{
 		            				} catch (UnknownHostException e) {
 										System.out.println("[Node]Wrong IP Format");
 									}
-		            				try{
-		            		            nextAddress = InetAddress.getByName("11.11.11.11");
-		            		        }catch (UnknownHostException e){
-		            		            throw new RuntimeException(e);
-		            		        }
+		            				resetIP();
 		            				previousAddress = null;
 		            			}
 		            			break;
