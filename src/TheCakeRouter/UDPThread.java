@@ -184,6 +184,7 @@ public class UDPThread extends Thread {
 			         }catch (Exception e){
 			        	 System.out.println("Wrong port nr format");
 			         }
+			    	break;
 			    case "EXIT":
             			response = "#EXIT# " + thisAddress.toString();
             			for(int n = 0; n < nodeVector.size(); n++) {
