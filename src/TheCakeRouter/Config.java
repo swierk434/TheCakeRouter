@@ -4,25 +4,30 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class Config {
-    public static final int Port = 33000;
-    public static final int NodePort = 33001;
-    public static final int SendingPort = 33002;
-    public static final int Buffer_size = 65536;
-    public static final InetAddress nodeAddress;
-    static {
+    public int Port = 33000;
+    public int NodePort = 33001;
+    public int SendingPort = 33002;
+    public int Buffer_size = 65536;
+    public InetAddress nodeAddress;
+    public InetAddress recipientAddress;
+
+    public Config(){
+    	Port = 33000;
+        NodePort = 33001;
+        SendingPort = 33002;
+        Buffer_size = 65536;
         try{
-            nodeAddress = InetAddress.getByName("172.20.10.5");
+            nodeAddress = InetAddress.getByName("127.0.0.0");
         }catch (UnknownHostException e){
             throw new RuntimeException(e);
         }
-    }
-    public static final InetAddress recipientAddress;
-    static {
-        try{
-        	recipientAddress = InetAddress.getByName("172.20.10.2");
-        }catch (UnknownHostException e){
+       try{
+           	recipientAddress = InetAddress.getByName("127.0.0.0");
+       }catch (UnknownHostException e){
             throw new RuntimeException(e);
-        }
-    }
-    
+       }
+    }	
+    	
 }
+    
+    

@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import java.util.Vector;
 
 public class NodeThread extends Thread{
+	Config config;
 	String recivedMessage, recivedTokens[], response;
 	DatagramSocket datagramSocket;
 	DatagramPacket receivedPacket, responsePacket;
@@ -20,8 +21,8 @@ public class NodeThread extends Thread{
 	
 	public NodeThread() {
 		super();
-		byteMessage = new byte[Config.Buffer_size];
-		byteResponse = new byte[Config.Buffer_size];
+		byteMessage = new byte[config.Buffer_size];
+		byteResponse = new byte[config.Buffer_size];
 		response = "";
 		previousPort =  null;
 		previousAddress = null;
@@ -33,7 +34,7 @@ public class NodeThread extends Thread{
 			e1.printStackTrace();
 		}
 		try {
-			datagramSocket = new DatagramSocket(Config.NodePort);
+			datagramSocket = new DatagramSocket(config.NodePort);
 		} catch (SocketException e2) {
 			System.out.println("[Node]Opening Socket Failed");
 		}
@@ -44,13 +45,13 @@ public class NodeThread extends Thread{
 		}
 		nodeVector = new Vector<InetAddress>(0);
 		nodeVector.add(thisAddress);  
-		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
+		receivedPacket = new DatagramPacket(new byte[config.Buffer_size], config.Buffer_size);
 		nextAddress = resetIP();
 	}
 	public NodeThread(Vector<InetAddress> vector) {
 		super();
-		byteMessage = new byte[Config.Buffer_size];
-		byteResponse = new byte[Config.Buffer_size];
+		byteMessage = new byte[config.Buffer_size];
+		byteResponse = new byte[config.Buffer_size];
 		response = "";
 		previousPort =  null;
 		previousAddress = null;
@@ -62,7 +63,7 @@ public class NodeThread extends Thread{
 			e1.printStackTrace();
 		}
 		try {
-			datagramSocket = new DatagramSocket(Config.NodePort);
+			datagramSocket = new DatagramSocket(config.NodePort);
 		} catch (SocketException e2) {
 			System.out.println("[Node]Opening Socket Failed");
 		}
@@ -72,7 +73,7 @@ public class NodeThread extends Thread{
 			System.out.println("[Node]Changing Timeout Failed");
 		}
 		nodeVector = vector;
-		receivedPacket = new DatagramPacket(new byte[Config.Buffer_size], Config.Buffer_size);
+		receivedPacket = new DatagramPacket(new byte[config.Buffer_size], config.Buffer_size);
 		nextAddress = resetIP();
 	}
 	public String merge(String[] tab, int firstIndex, int lastIndex, String gap) {
@@ -150,9 +151,8 @@ public class NodeThread extends Thread{
 	        	//System.out.println("[Node]"+nodeVector);
 	            
 	        	receievePacket();
-	            
+	           
 	            System.out.println("[Node]PacketRecived");
-	            
 	            //System.out.println(receivedPacket.getAddress());
 	            //System.out.println(nextAddress);
 	            byteResponse = receivedPacket.getData();
@@ -180,12 +180,12 @@ public class NodeThread extends Thread{
 		            		case "#SEND#":
 		            			response = "";
 		            			sendBackAddress = previousAddress;
-		            			sendingPort = Config.SendingPort;
+		            			sendingPort = config.SendingPort;
 		            			try {
 		            				nextAddress = InetAddress.getByName(recivedTokens[1].split("/")[1]);
 		            				if(nodeVector.contains(nextAddress) == true) {
 			            				response = "#SEND# ";
-			            				sendingPort = Config.NodePort;
+			            				sendingPort = config.NodePort;
 			            			}
 			            			response += merge(recivedTokens, 2, recivedTokens.length-1, " ");
 			            			System.out.println("[Node]Response: "+ response);
@@ -202,7 +202,7 @@ public class NodeThread extends Thread{
 			            			response = "#ADD_NODE# ";
 			            			response += previousAddress.toString();
 			            		for(int n = 0; n < nodeVector.size(); n++) {
-			    	 	        		sendResponse(response, nodeVector.get(n), Config.NodePort, "error#ADD_NODE#");
+			    	 	        		sendResponse(response, nodeVector.get(n), config.NodePort, "error#ADD_NODE#");
 			    	 	        }
 			            		if(nodeVector.contains(previousAddress) == false) {
 			            			nodeVector.add(previousAddress);
