@@ -145,6 +145,13 @@ public class UDPThread extends Thread {
 	@SuppressWarnings("deprecation")
 	public void run() {
 			System.out.println("[UDP]UDPThread Started");
+			System.out.println("[UDP]type node address");
+	    	clientinput = scanIn.nextLine();
+	    	 try{
+	             config.nodeAddress = InetAddress.getByName(clientinput);
+	         }catch (UnknownHostException e){
+	        	 System.out.println("Wrong ip address format");
+	         }
 	        sendResponse("#JOIN_REQUEST#", config.nodeAddress, config.NodePort, "[UDP]Error#JOIN_REQUEST# - Client");
 	        System.out.println("[UDP]Join request sent");
 	        recievePacket();
