@@ -21,6 +21,7 @@ public class NodeThread extends Thread{
 	
 	public NodeThread() {
 		super();
+		config = new Config();
 		byteMessage = new byte[config.Buffer_size];
 		byteResponse = new byte[config.Buffer_size];
 		response = "";
@@ -50,6 +51,7 @@ public class NodeThread extends Thread{
 	}
 	public NodeThread(Vector<InetAddress> vector) {
 		super();
+		config = new Config();
 		byteMessage = new byte[config.Buffer_size];
 		byteResponse = new byte[config.Buffer_size];
 		response = "";
